@@ -1,0 +1,7 @@
+[Unit]
+Description=Hello world service
+After=systemd-user-sessions.service
+[Service]
+Type=simple
+ExecStart=/home/popcalin/Documents/eclipse_workspace/AlarmClock_dbus_server/misc/service_scrip
+
