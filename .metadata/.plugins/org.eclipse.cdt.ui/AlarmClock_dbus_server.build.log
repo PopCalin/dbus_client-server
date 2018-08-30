@@ -1,4 +1,4 @@
-14:31:28 **** Incremental Build of configuration Default for project AlarmClock_dbus_server ****
+15:34:40 **** Incremental Build of configuration Default for project AlarmClock_dbus_server ****
 make all 
 gcc -E -P -v -dD src/spec.c > include/builtin.h
 Using built-in specs.
@@ -28,5 +28,5 @@ gcc -g src/alarmCLock_server.c build/alarmClockServiceStubs.o -o build/alarmCLoc
 gcc -g src/alarmCLock_client.c -o build/alarmCLock_client -g -Wall -Werror -pthread -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -ldbus-glib-1 -ldbus-1 -lgio-2.0 -lgobject-2.0 -lglib-2.0
 gdbus-codegen --generate-c-code alarmClockServiceStubs --c-namespace alarmClockService --interface-prefix com.example.AlarmService. --c-generate-object-manager misc/AlarmClock.xml
 
-14:31:30 Build Finished. 0 errors, 0 warnings. (took 2s.170ms)
+15:34:42 Build Finished. 0 errors, 0 warnings. (took 2s.322ms)
 
