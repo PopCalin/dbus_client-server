@@ -7,7 +7,9 @@
 #ifndef __ALARMCLOCKSERVICESTUBS_H__
 #define __ALARMCLOCKSERVICESTUBS_H__
 
-#include <gio/gio.h>
+
+#include <gio/gi
+o.h>
 
 G_BEGIN_DECLS
 
