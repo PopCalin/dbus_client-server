@@ -1,0 +1,6 @@
+06:12:18 **** Incremental Build of configuration Default for project test ****
+make all 
+make: Nothing to be done for 'all'.
+
+06:12:19 Build Finished. 0 errors, 0 warnings. (took 723ms)
+

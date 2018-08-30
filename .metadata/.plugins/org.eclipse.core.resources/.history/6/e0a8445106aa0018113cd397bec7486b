@@ -1,0 +1,279 @@
+	.file	"alarmCLock_client.i.c"
+	.section	.rodata
+.LC0:
+	.string	"Calling getAlarmStatus()...\n"
+.LC1:
+	.string	"getAlarmStatus"
+.LC2:
+	.string	"error"
+.LC3:
+	.string	"src/alarmCLock_client.c"
+.LC4:
+	.string	"(&s)"
+.LC5:
+	.string	"The server answered: '%s'\n"
+	.text
+	.globl	getAlarmStatus
+	.type	getAlarmStatus, @function
+getAlarmStatus:
+.LFB202:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$48, %rsp
+	movq	%rdi, -40(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movq	$0, -32(%rbp)
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	g_printf
+	movq	-40(%rbp), %rax
+	subq	$8, %rsp
+	leaq	-32(%rbp), %rdx
+	pushq	%rdx
+	movl	$0, %r9d
+	movl	$-1, %r8d
+	movl	$0, %ecx
+	movl	$0, %edx
+	movl	$.LC1, %esi
+	movq	%rax, %rdi
+	call	g_dbus_proxy_call_sync
+	addq	$16, %rsp
+	movq	%rax, -16(%rbp)
+	movq	-32(%rbp), %rax
+	testq	%rax, %rax
+	je	.L2
+	movq	-32(%rbp), %rax
+	pushq	$0
+	pushq	$0
+	movq	%rax, %r9
+	movl	$.LC2, %r8d
+	movl	$__func__.23515, %ecx
+	movl	$21, %edx
+	movl	$.LC3, %esi
+	movl	$0, %edi
+	call	g_assertion_message_error
+	addq	$16, %rsp
+.L2:
+	leaq	-24(%rbp), %rdx
+	movq	-16(%rbp), %rax
+	movl	$.LC4, %esi
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	g_variant_get
+	movq	-24(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$.LC5, %edi
+	movl	$0, %eax
+	call	g_printf
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_variant_unref
+	nop
+	movq	-8(%rbp), %rax
+	xorq	%fs:40, %rax
+	je	.L3
+	call	__stack_chk_fail
+.L3:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE202:
+	.size	getAlarmStatus, .-getAlarmStatus
+	.section	.rodata
+.LC6:
+	.string	"Calling Echo('1234')...\n"
+.LC7:
+	.string	"1234"
+.LC8:
+	.string	"(s)"
+.LC9:
+	.string	"setAlarmStatus"
+	.text
+	.globl	setAlarmStatus
+	.type	setAlarmStatus, @function
+setAlarmStatus:
+.LFB203:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$48, %rsp
+	movq	%rdi, -40(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movq	$0, -24(%rbp)
+	movl	$.LC6, %edi
+	movl	$0, %eax
+	call	g_printf
+	movl	$.LC7, %esi
+	movl	$.LC8, %edi
+	movl	$0, %eax
+	call	g_variant_new
+	movq	%rax, %rsi
+	movq	-40(%rbp), %rax
+	subq	$8, %rsp
+	leaq	-24(%rbp), %rdx
+	pushq	%rdx
+	movl	$0, %r9d
+	movl	$-1, %r8d
+	movl	$0, %ecx
+	movq	%rsi, %rdx
+	movl	$.LC9, %esi
+	movq	%rax, %rdi
+	call	g_dbus_proxy_call_sync
+	addq	$16, %rsp
+	movq	%rax, -16(%rbp)
+	movq	-24(%rbp), %rax
+	testq	%rax, %rax
+	je	.L5
+	movq	-24(%rbp), %rax
+	pushq	$0
+	pushq	$0
+	movq	%rax, %r9
+	movl	$.LC2, %r8d
+	movl	$__func__.23521, %ecx
+	movl	$41, %edx
+	movl	$.LC3, %esi
+	movl	$0, %edi
+	call	g_assertion_message_error
+	addq	$16, %rsp
+.L5:
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_variant_unref
+	nop
+	movq	-8(%rbp), %rax
+	xorq	%fs:40, %rax
+	je	.L6
+	call	__stack_chk_fail
+.L6:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE203:
+	.size	setAlarmStatus, .-setAlarmStatus
+	.section	.rodata
+	.align 8
+.LC10:
+	.string	"com.example.AlarmService.AlarmInterface"
+.LC11:
+	.string	"/com/example/AlarmService"
+.LC12:
+	.string	"com.example.AlarmService"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB204:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movq	$0, -32(%rbp)
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rdx
+	movl	$0, %esi
+	movl	$1, %edi
+	call	g_bus_get_sync
+	movq	%rax, -24(%rbp)
+	movq	-32(%rbp), %rax
+	testq	%rax, %rax
+	je	.L8
+	movq	-32(%rbp), %rax
+	pushq	$0
+	pushq	$0
+	movq	%rax, %r9
+	movl	$.LC2, %r8d
+	movl	$__func__.23528, %ecx
+	movl	$52, %edx
+	movl	$.LC3, %esi
+	movl	$0, %edi
+	call	g_assertion_message_error
+	addq	$16, %rsp
+.L8:
+	movq	-24(%rbp), %rax
+	leaq	-32(%rbp), %rdx
+	pushq	%rdx
+	pushq	$0
+	movl	$.LC10, %r9d
+	movl	$.LC11, %r8d
+	movl	$.LC12, %ecx
+	movl	$0, %edx
+	movl	$0, %esi
+	movq	%rax, %rdi
+	call	g_dbus_proxy_new_sync
+	addq	$16, %rsp
+	movq	%rax, -16(%rbp)
+	movq	-32(%rbp), %rax
+	testq	%rax, %rax
+	je	.L9
+	movq	-32(%rbp), %rax
+	pushq	$0
+	pushq	$0
+	movq	%rax, %r9
+	movl	$.LC2, %r8d
+	movl	$__func__.23528, %ecx
+	movl	$62, %edx
+	movl	$.LC3, %esi
+	movl	$0, %edi
+	call	g_assertion_message_error
+	addq	$16, %rsp
+.L9:
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	setAlarmStatus
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	getAlarmStatus
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_object_unref
+	movq	-24(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_object_unref
+	movl	$0, %eax
+	movq	-8(%rbp), %rcx
+	xorq	%fs:40, %rcx
+	je	.L11
+	call	__stack_chk_fail
+.L11:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE204:
+	.size	main, .-main
+	.section	.rodata
+	.align 8
+	.type	__func__.23515, @object
+	.size	__func__.23515, 15
+__func__.23515:
+	.string	"getAlarmStatus"
+	.align 8
+	.type	__func__.23521, @object
+	.size	__func__.23521, 15
+__func__.23521:
+	.string	"setAlarmStatus"
+	.type	__func__.23528, @object
+	.size	__func__.23528, 5
+__func__.23528:
+	.string	"main"
+	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
+	.section	.note.GNU-stack,"",@progbits

@@ -1,0 +1,20 @@
+//#include <stdio.h>
+//#include <dbus/dbus-glib-lowlevel.h> /* for glib main loop */
+#include <glib/gprintf.h>
+#include <gio/gio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dbus-1.0/dbus/dbus.h>
+#include <dbus-1.0/dbus/dbus-glib-lowlevel.h> /* for glib main loop */
+//#include <dbus-1.0/dbus/dbus.h>
+
+
+int main(void)
+{
+	return 1;
+}
+
+//gcc -Wall main.c pkg-config --libs --cflags dbus-1 glib-2.0 gio-2.0 gthread-2.0 gio-unix-2.0 gobject-2.0 -o main

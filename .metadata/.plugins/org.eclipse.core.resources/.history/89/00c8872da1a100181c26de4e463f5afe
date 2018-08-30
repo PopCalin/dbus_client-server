@@ -1,0 +1,7 @@
+#include <stdio.h>
+#include <dbus-1.0/dbus/dbus-glib.h>
+
+int main(void)
+{
+	return 1;
+}

@@ -1,0 +1,120 @@
+/*
+ * alarmClock_client.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+const char *server_introspection_xml =
+	DBUS_INTROSPECT_1_0_XML_DOCTYPE_DECL_NODE
+	"<!DOCTYPE node PUBLIC\n"
+	"   "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"\n"
+	"    "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd" >\n"
+	"<node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">\n"
+
+	"  <interface name='org.freedesktop.DBus.Introspectable'>\n"
+	"    <method name='Introspect'>\n"
+	"      <arg name='data' type='s' direction='out' />\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+	"  <interface name='org.freedesktop.DBus.Properties'>\n"
+	"    <method name='Get'>
+	"      <arg name='interface' type='s' direction='in' />\n"
+	"      <arg name='property'  type='s' direction='in' />\n"
+    "	   <arg name='value'     type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='GetAll'>\n"
+	"      <arg name='interface'  type='s'     direction='in'/>\n"
+	"      <arg name='properties' type='a{sv}' direction='out'/>\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+
+	"  <interface name="com.example.AlarmService.AlarmInterface">\n"
+	"    <method name="SetTime">
+	"      <arg name="time" direction="in" type="s"></arg>\n"
+	"    </method>\n"
+
+	"    <method name="setAlarmTime">\n"
+	"      <arg name="time" direction="in" type="s"></arg>\n"
+	"    </method>\n"
+
+	"    <method name="getAlarmStatus">\n"
+	"      <arg name="alarm_status" direction="out" type="s"></arg>\n"
+	"    </method>\n"
+
+	"    <method name="setAlarmStatus">\n"
+	"      <arg name="alarm_status" direction="in" type="s"></arg>\n"
+	"    </method>\n"
+
+	"    <signal name="ringAlarm">\n"
+	"    </signal>\n"
+
+	"    <doc:doc>\n"
+	"        <doc:description>\n"
+	"          <doc:para>\n"
+	"          Alarm interface\n"
+	"          </doc:para>\n"
+	"        </doc:description>\n"
+	"    </doc:doc>\n"
+
+	"  </interface>\n"
+	"</node>\n";
+
+
+
+
+
+
+
+	"<node>\n"
+
+	"  <interface name='org.freedesktop.DBus.Introspectable'>\n"
+	"    <method name='Introspect'>\n"
+	"      <arg name='data' type='s' direction='out' />\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+	"  <interface name='org.freedesktop.DBus.Properties'>\n"
+	"    <method name='Get'>\n"
+	"      <arg name='interface' type='s' direction='in' />\n"
+	"      <arg name='property'  type='s' direction='in' />\n"
+	"      <arg name='value'     type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='GetAll'>\n"
+	"      <arg name='interface'  type='s'     direction='in'/>\n"
+	"      <arg name='properties' type='a{sv}' direction='out'/>\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+	"  <interface name='org.example.TestInterface'>\n"
+	"    <property name='Version' type='s' access='read' />\n"
+	"    <method name='Ping' >\n"
+	"      <arg type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='Echo'>\n"
+	"      <arg name='string' direction='in' type='s'/>\n"
+	"      <arg type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='EmitSignal'>\n"
+	"    </method>\n"
+	"    <method name='Quit'>\n"
+	"    </method>\n"
+	"    <signal name='OnEmitSignal'>\n"
+	"    </signal>"
+	"  </interface>\n"
+
+	"</node>\n";
+
+#include <stdio.h>
+
+int main()
+{
+	return 1;
+}
+
+
+/*/<--
+gdbus-codegen --generate-c-code alarmServiceStubs --c-namespace alarmService --interface-prefix com.example.AlarmService. --c-generate-object-manager AlarmInterface.xml
+..>/ */

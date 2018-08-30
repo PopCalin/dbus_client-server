@@ -1,0 +1,103 @@
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib-lowlevel.h> /* for glib main loop */
+
+const char *introspection_xml =
+		"<node>\n"
+		"  <interface name='org.freedesktop.DBus.Introspectable'>\n"
+		"    <method name='Introspect'>\n"
+		"      <arg name='data' type='s' direction='out' />\n"
+		"    </method>\n"
+		"  </interface>\n"
+
+		"  <interface name='org.freedesktop.DBus.Properties'>\n"
+		"    <method name='Get'>\n"
+		"      <arg name='interface' type='s' direction='in' />\n"
+		"      <arg name='property'  type='s' direction='in' />\n"
+		"      <arg name='value'     type='s' direction='out' />\n"
+		"    </method>\n"
+		"    <method name='GetAll'>\n"
+		"      <arg name='interface'  type='s'     direction='in'/>\n"
+		"      <arg name='properties' type='a{sv}' direction='out'/>\n"
+		"    </method>\n"
+		"  </interface>\n"
+
+		"  <interface name='org.example.TestInterface'>\n"
+		"    <method name='Echo'>\n"
+		"      <arg name='EchoString' direction='in' type='s'/>\n"
+		"      <arg type='s' direction='out' />\n"
+		"    </method>\n"
+		"    <signal name='OnEmitSignal'>\n"
+		"    </signal>"
+		"  </interface>\n"
+		"</node>\n";
+
+typedef enum
+{
+	CONNECTION_FAILED = 0,
+	CONNECTION_SUCCEEDED = 1
+}CONNECTION_STATUS;
+
+typedef enum
+{
+	CONNECTION_FAILURE = -1,
+	REQUEST_NAME_FAILURE = -2
+}EXIT_STATUS;
+
+int main(void)
+{
+	/*
+	 * Handles a connection to DBus.
+	 * This is a Singleton class, only 1 connection to the SYSTEM or SESSION busses can be made. Repeated calls to getConnection will return the same reference.
+	 * Signal Handlers and method calls from remote objects are run in their own threads, you MUST handle the concurrency issues.
+	 */
+	DBusConnection *connection;
+
+	/* Contains standard errors that can be thrown from methods. */
+	DBusError error;
+
+	dbus_error_init(&error);
+
+	/* Connects to a bus daemon and registers the client with it
+	 * If a connection to the bus already exists, then that connection is returned. The caller of this function owns a reference to the bus.
+	 * If returning a newly-created connection, this function will block until authentication and bus registration are complete.
+	 */
+	connection = dbus_bus_get(DBUS_BUS_SYSTEM, &error);
+
+	if (connection != CONNECTION_FAILED)
+	{
+		fprintf(stderr, "Failed to get a SYSTEM DBus connection: %s\n", error.message);
+		dbus_error_free(&error);
+
+		return CONNECTION_FAILURE;
+	}
+
+	/*
+	 * Asks the bus to assign the given name to this connection by invoking the RequestName method on the bus.
+	 * First you should know that for each bus name, the bus stores a queue of connections that would like to own it. Only one owns it at a time - called the primary owner. If the primary owner releases the name or disconnects, then the next owner in the queue atomically takes over.
+	 * So for example if you have an application org.freedesktop.TextEditor and multiple instances of it can be run, you can have all of them sitting in the queue.
+	 * The first one to start up will receive messages sent to org.freedesktop.TextEditor, but if that one exits another will become the primary owner and receive messages.
+	 * The queue means you don't need to manually watch for the current owner to disappear and then request the name again.
+	 */
+	unsigned char dbus_name_request_response = dbus_bus_request_name(connection, "org.example.TestServer", DBUS_NAME_FLAG_REPLACE_EXISTING , &error);
+
+	if ( (dbus_name_request_response == DBUS_REQUEST_NAME_REPLY_IN_QUEUE 	 ) ||
+		 (dbus_name_request_response == DBUS_REQUEST_NAME_REPLY_EXISTS    	 ) ||
+		 (dbus_name_request_response == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER ))
+
+	{
+		fprintf(stderr, "Failed to request name on bus: %s\n", error.message);
+		return REQUEST_NAME_FAILURE;
+	}
+
+	dbus_connection_register_object_path(conn, "/org/example/TestObject", &server_vtable, NULL)
+
+	if (!) {
+		fprintf(stderr, "Failed to register a object path for 'TestObject'\n");
+		goto fail;
+	}
+}

@@ -1,0 +1,56 @@
+CFLAGS_DBUS_GLIB = $(shell pkg-config --cflags --libs dbus-1 dbus-glib-1 gio-2.0 gio-unix-2.0)
+CFLAGS = -g -Wall -Werror
+
+SRC_DIR			:= src
+INCLUDE_DIR		:= include
+BUILD_DIR		:= build
+MISC_DIR		:= misc
+
+PREPROC_DIR		:=$(BUILD_DIR)/preproc
+ASM_DIR			:=$(BUILD_DIR)/asm
+OBJ_DIR			:=$(BUILD_DIR)/obj
+EXE_DIR			:=$(BUILD_DIR)/exe
+
+
+all: spec alarmClockServiceStubs alarmCLock_server alarmCLock_client
+	
+alarmClockServiceStubs: $(SRC_DIR)/alarmClockServiceStubs.c
+	# preprocess source files
+	gcc -E -P $< -o $(PREPROC_DIR)/alarmClockServiceStubs.i.c $(CFLAGS) $(CFLAGS_DBUS_GLIB)
+	# assembly code
+	gcc -S $(PREPROC_DIR)/alarmClockServiceStubs.i.c -o $(ASM_DIR)/alarmClockServiceStubs.s
+	# compiling the assembly code
+	gcc -c $(ASM_DIR)/alarmClockServiceStubs.s -o $(OBJ_DIR)/alarmClockServiceStubs.o
+
+alarmCLock_client: alarmCLock_client.c
+	# preprocess source files
+	#gcc -E -P $< -o $(PREPROC_DIR)/alarmCLock_client.i.c $(CFLAGS) $(CFLAGS_DBUS_GLIB)
+	# assembly code
+	#gcc -S $(PREPROC_DIR)/alarmCLock_client.i.c -o $(ASM_DIR)/alarmCLock_client.s
+	# compiling the assembly code
+	#gcc -c $(ASM_DIR)/alarmCLock_client.s -o $(OBJ_DIR)/alarmCLock_client.o
+    #link together object files
+	gcc -g alarmCLock_client.c -o $(EXE_DIR)/alarmCLock_client.exe
+	
+alarmCLock_server: $(SRC_DIR)/alarmCLock_server.c
+    # preprocess source files
+	gcc -E -P $< -o $(PREPROC_DIR)/alarmCLock_server.i.c $(CFLAGS) $(CFLAGS_DBUS_GLIB)
+	# assembly code
+	gcc -S $(PREPROC_DIR)/alarmCLock_server.i.c -o $(ASM_DIR)/alarmCLock_server.s
+	# compiling the assembly code
+	gcc -c $(ASM_DIR)/alarmCLock_server.s -o $(OBJ_DIR)/alarmCLock_server.o
+    #link together object files
+	#gcc -g $(OBJ_DIR)/alarmCLock_server.o -o $(EXE_DIR)/alarmCLock_server.exe
+
+spec: spec.c
+	gcc -E -P -v -dD $< > builtin.h
+	
+
+clean:
+	rm -f alarmCLock_server
+	rm -f alarmCLock_client
+	
+.PHONY: all clean
+
+
+

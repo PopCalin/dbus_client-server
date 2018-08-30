@@ -1,0 +1,23 @@
+CFLAGS_DBUS = $(shell pkg-config --cflags --libs dbus-1 dbus-glib-1 gio-2.0)
+CFLAGS = -g -Wall -Werror
+
+BUILD_DIR			:= build
+INCLUDE_DIR			:= include
+MISC_DIR            := misc
+SRC_DIR             := src
+
+all: spec dbus_server
+
+dbus_server: dbus_server.c
+	gcc $< -o $@ $(CFLAGS) $(CFLAGS_DBUS)
+
+spec: spec.c
+	gcc -E -P -v -dD spec.c > $(INCLUDE_DIR)/builtin.h
+	
+clean:
+	rm -f dbus-server
+	
+.PHONY: all clean
+
+
+

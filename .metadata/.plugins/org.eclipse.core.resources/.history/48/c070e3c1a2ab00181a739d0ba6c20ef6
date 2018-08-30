@@ -1,0 +1,218 @@
+/*
+ * alarmClock_server.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+#include <string.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#include <gio/gio.h>
+#include "../include/alarmClockServiceStubs.h"
+#include <glib.h>
+#include <glib/gprintf.h>
+#include <string.h>
+
+
+/* This enum represents the alarm status. The alarm can be enabled (ON) or disabled (OFF) */
+typedef enum
+{
+	OFF = 0, //alarm disabled
+	ON  = 1  //alarm enabled
+}ALARM_STATUS;
+
+/* Alarm status. Initial disabled */
+unsigned char alarm_status = OFF;
+
+/* Check the arguments of the setAlarmTime function. The arguments need to reprezent valid hours,minutes and seconds. */
+#define IS_VALID_HOUR_ARGS(arg)	( ((arg) <= 59 && (arg) >= 0) ? 1 : 0 )
+
+unsigned char alarm_day;
+
+/* Reprezentation of the server time and alarm time, which can be set by the client */
+GDateTime *server_time;
+GDateTime *alarm_time;
+
+/* Posix mutex used for syncronization */
+pthread_mutex_t lock;
+
+/* Message that is returnd by the server's function to the client*/
+char *return_message;
+
+alarmClockServiceAlarmInterface *service_interface;
+
+/* Function that sets the alarm time */
+void on_setAlarmTime(alarmClockServiceAlarmInterface *interface, GDBusMethodInvocation *invocation, guchar arg_hour,
+		             guchar arg_min, guchar arg_sec, guchar arg_week_day, gpointer user_data)
+{
+	/* Check the argments */
+	if (IS_VALID_HOUR_ARGS(arg_sec) && IS_VALID_HOUR_ARGS(arg_min) && IS_VALID_HOUR_ARGS(arg_hour) && (arg_week_day<=7 && arg_week_day>=1))
+	{
+		/* Set the alarm day and alarm time */
+		alarm_day = arg_week_day;
+	    sprintf(return_message,"Alarm succesfully set: %d:%d:%d",arg_hour,arg_min,arg_sec);
+
+		pthread_mutex_lock(&lock);
+	    alarm_time = g_date_time_new_utc(2018,1,1,arg_hour,arg_min,arg_sec);
+		pthread_mutex_unlock(&lock);
+	}
+	else
+	{
+		strcpy(return_message, "Invalid args");
+	}
+
+	alarm_clock_service_alarm_interface_complete_set_alarm_time(interface, invocation,return_message);
+}
+
+void on_setTime (alarmClockServiceAlarmInterface *interface, GDBusMethodInvocation *invocation, guchar arg_day, guchar arg_month, guint16 arg_year,
+				 guchar arg_hour, guchar arg_min, guchar arg_sec, gpointer user_data)
+{
+
+	bool is_valid_day   = g_date_valid_day (arg_day);
+	bool is_valid_month = g_date_valid_month (arg_month);
+	bool is_valid_year  = g_date_valid_year(arg_year);
+
+	/* Check the argments */
+	if (is_valid_day &&is_valid_month && is_valid_year && IS_VALID_HOUR_ARGS(arg_sec) && IS_VALID_HOUR_ARGS(arg_min) && IS_VALID_HOUR_ARGS(arg_hour) )
+	{
+	    sprintf(return_message,"Time succesfully set: %d:%d:%d   %d:%d:%d",arg_year,arg_month,arg_day,arg_hour,arg_min,arg_sec);
+		pthread_mutex_lock(&lock);
+		/* Set the server time */
+		server_time = g_date_time_new_utc(arg_year,arg_month,arg_day,arg_hour,arg_min,arg_sec);
+		pthread_mutex_unlock(&lock);
+	}
+	else
+	{
+		strcpy(return_message, "Invalid args");
+	}
+
+	alarm_clock_service_alarm_interface_complete_set_time(interface, invocation,return_message);
+}
+
+void on_setAlarmStatus (alarmClockServiceAlarmInterface *interface,GDBusMethodInvocation  *invocation, const gchar *greeting, gpointer user_data)
+{
+	/* Check the argment and set the alarm status*/
+	if (!strcmp(greeting,"Alarm ON"))
+	{
+		alarm_status = ON;
+		strcpy(return_message,"Alarm status -> ON");
+	}
+	else if (!strcmp(greeting,"Alarm OFF"))
+	{
+		alarm_status = OFF;
+		strcpy(return_message, "Alarm status -> OFF");
+	}
+	else
+	{
+		strcpy(return_message, "Invalid args: use \"Alarm ON/OFF\"");
+	}
+	alarm_clock_service_alarm_interface_complete_set_alarm_status(interface, invocation,return_message);
+
+}
+
+void on_getAlarmStatus (alarmClockServiceAlarmInterface *interface,GDBusMethodInvocation *invocation,const gchar *greeting,gpointer user_data)
+{
+	/* Return the alarm status */
+	if (alarm_status == ON)
+	{
+		strcpy(return_message,"Alarm status -> ON");
+	}
+	else
+	{
+		strcpy(return_message,"Alarm status -> OFF");
+	}
+
+	alarm_clock_service_alarm_interface_complete_get_alarm_status(interface, invocation,return_message);
+}
+
+static void on_name_acquired (GDBusConnection *connection,const gchar *name,gpointer user_data)
+{
+  g_print ("Acquired the name %s on the system bus\n", name);
+}
+
+static void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user_data)
+{
+  g_print ("Lost the name %s on the session bus\n", name);
+}
+
+static void on_bus_acquired(GDBusConnection *connection, const gchar *name, gpointer user_data)
+{
+	alarmClockServiceObjectSkeleton *skeleton_object;
+    GDBusObjectManagerServer *service_manager = NULL;
+
+    service_manager = g_dbus_object_manager_server_new("/com/example/AlarmService/manager");
+    skeleton_object = alarm_clock_service_object_skeleton_new("/com/example/AlarmService/manager/Object");
+    service_interface = alarm_clock_service_alarm_interface_skeleton_new();
+
+    alarm_clock_service_object_skeleton_set_alarm_interface(skeleton_object, service_interface);
+
+    g_signal_connect (service_interface, "handle_set_alarm_status",G_CALLBACK (on_setAlarmStatus), NULL);
+
+    g_signal_connect (service_interface, "handle_get_alarm_status",G_CALLBACK (on_getAlarmStatus), NULL);
+
+    g_signal_connect (service_interface, "handle_set_time",G_CALLBACK (on_setTime), NULL);
+
+    g_signal_connect (service_interface, "handle-set-alarm-time",G_CALLBACK (on_setAlarmTime), NULL);
+
+    g_dbus_object_manager_server_export(service_manager, G_DBUS_OBJECT_SKELETON(skeleton_object));
+    g_dbus_object_manager_server_set_connection(service_manager,connection);
+
+    g_object_unref(skeleton_object);
+    g_object_unref(service_interface);
+    printf("Sccesfully aquired name: %s\n",name);
+}
+
+void *thread_function()
+{
+	while (TRUE)
+	{
+		g_usleep (G_USEC_PER_SEC);
+
+		pthread_mutex_lock(&lock);
+
+		server_time = g_date_time_add_seconds (server_time,1);
+		printf("\n%d:%d		%d:%d",g_date_time_get_minute(server_time),g_date_time_get_second(server_time),g_date_time_get_minute(alarm_time),g_date_time_get_second(alarm_time));
+
+		if (alarm_status == ON)
+		{
+			if ( g_date_time_get_second (server_time) == g_date_time_get_second (alarm_time) &&
+				 g_date_time_get_minute (server_time) == g_date_time_get_minute (alarm_time) &&
+				 g_date_time_get_hour (server_time) == g_date_time_get_hour (alarm_time) )
+			{
+				alarm_clock_service_alarm_interface_emit_ring_alarm(service_interface);
+			}
+		}
+
+		pthread_mutex_unlock(&lock);
+	}
+}
+
+int main (int argc, char *argv[])
+{
+  return_message = (char*)malloc(50*sizeof(char));
+  alarm_time = g_date_time_new_now_local();
+  server_time = g_date_time_new_now_local();
+
+  GMainLoop *loop;
+
+  g_bus_own_name (G_BUS_TYPE_SYSTEM, "com.example.AlarmService", G_BUS_NAME_OWNER_FLAGS_REPLACE, on_bus_acquired, on_name_acquired, on_name_lost, NULL, NULL);
+
+  pthread_t thread1;
+  const char *message1 = "Thread 1";
+
+  pthread_create(&thread1, NULL, thread_function, (void*) message1);
+
+  loop = g_main_loop_new (NULL,FALSE);
+  g_main_loop_run (loop);
+  pthread_join( thread1, NULL);
+
+
+  return 0;
+}
+

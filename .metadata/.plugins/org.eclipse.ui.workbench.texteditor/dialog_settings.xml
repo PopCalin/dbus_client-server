@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="emit" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="emit"/>
+			<item value="alarmClockServiceAlarmInterface"/>
+			<item value="ring_alarm"/>
+			<item value="alarm_clock_service_alarm_interface_emit_ring_alarm"/>
+			<item value="conn"/>
+			<item value="g_dbus_proxy_get_connection"/>
+			<item value="handle"/>
+			<item value="ring"/>
+			<item value="alarm_clock_service_alarm_interface_complete"/>
+			<item value="signal"/>
+			<item value="system_time"/>
+			<item value="lock"/>
+			<item value="mutex"/>
+			<item value="alarm_clock_service_alarm_interface_complete_set_alarm_time"/>
+			<item value="server_time"/>
+		</list>
+		<list key="replacehistory">
+			<item value="skeleton_object"/>
+			<item value="service_manager"/>
+			<item value="service_interface"/>
+			<item value=""/>
+			<item value="1"/>
+			<item value="0"/>
+			<item value="org"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="338" key="DIALOG_WIDTH"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="434" key="DIALOG_HEIGHT"/>
+		<item value="1232" key="DIALOG_X_ORIGIN"/>
+		<item value="100" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

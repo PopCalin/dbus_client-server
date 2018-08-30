@@ -1,0 +1,34 @@
+/*
+ * alarmClock_server.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+
+
+#include <gio/gio.h>
+
+int main (int argc, char *argv[])
+{
+	guint owner_id;
+	GMainLoop *loop;
+	GBusNameOwnerFlags flags;
+	gboolean opt_replace;
+	gboolean opt_allow_replacement;
+	gchar *opt_name;
+	GOptionContext *opt_context;
+	GError *error;
+
+	  GOptionEntry opt_entries[] =
+	    {
+	      { "replace", 'r', 0, G_OPTION_ARG_NONE, &opt_replace, "Replace existing name if possible", NULL },
+	      { "allow-replacement", 'a', 0, G_OPTION_ARG_NONE, &opt_allow_replacement, "Allow replacement", NULL },
+	      { "name", 'n', 0, G_OPTION_ARG_STRING, &opt_name, "Name to acquire", NULL },
+	      { NULL}
+	    };
+
+
+
+	return 1;
+}

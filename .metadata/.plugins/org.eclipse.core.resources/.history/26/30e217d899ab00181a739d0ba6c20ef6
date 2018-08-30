@@ -1,0 +1,68 @@
+<!DOCTYPE node PUBLIC
+    "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+    "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd" >
+<node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+
+  <interface name='org.freedesktop.DBus.Introspectable'>
+    <method name='Introspect'>
+      <arg name='data' type='s' direction='out' />
+    </method>
+  </interface>
+
+  <interface name='org.freedesktop.DBus.Properties'>
+    <method name='Get'>
+      <arg name='interface' type='s' direction='in' />
+      <arg name='property'  type='s' direction='in' />
+      <arg name='value'     type='s' direction='out' />
+    </method>
+    <method name='GetAll'>
+      <arg name='interface'  type='s'     direction='in'/>
+      <arg name='properties' type='a{sv}' direction='out'/>
+    </method>
+  </interface>
+
+
+  <interface name="com.example.AlarmService.AlarmInterface">
+    <method name="setTime">
+      <arg name="day"   direction="in" type="y"></arg>
+      <arg name="month" direction="in" type="y"></arg>
+      <arg name="year"  direction="in" type="q"></arg>
+      <arg name="hour"  direction="in" type="y"></arg>
+      <arg name="min"   direction="in" type="y"></arg>
+      <arg name="sec"   direction="in" type="y"></arg>
+      <arg name="is_valid" direction="out" type="s"></arg>
+    </method>
+
+    <method name="setAlarmTime">
+      <arg name="day"   direction="in" type="y"></arg>
+      <arg name="month" direction="in" type="y"></arg>
+      <arg name="year"  direction="in" type="q"></arg>
+      <arg name="hour"  direction="in" type="y"></arg>
+      <arg name="min"   direction="in" type="y"></arg>
+      <arg name="sec"   direction="in" type="y"></arg>
+       <arg name="is_valid" direction="out" type="s"></arg>
+    </method>
+
+    <method name="setAlarmStatus">
+      <arg name="alarm_status" direction="in" type="s"></arg>
+      <arg name="is_valid" direction="out" type="s"></arg>
+    </method>
+    
+    <method name="getAlarmStatus">
+      <arg name="alarm_status" direction="out" type="s"></arg>
+    </method>
+
+
+    <signal name="ringAlarm">
+    </signal>
+
+    <doc:doc>
+        <doc:description>
+          <doc:para>
+          Alarm interface
+          </doc:para>
+        </doc:description>
+    </doc:doc>
+
+  </interface>
+</node>

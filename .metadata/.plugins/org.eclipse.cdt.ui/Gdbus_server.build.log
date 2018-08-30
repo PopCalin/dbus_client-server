@@ -1,0 +1,6 @@
+06:12:16 **** Incremental Build of configuration Default for project Gdbus_server ****
+make all 
+make: Nothing to be done for 'all'.
+
+06:12:17 Build Finished. 0 errors, 0 warnings. (took 1s.46ms)
+

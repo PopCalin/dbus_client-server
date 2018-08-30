@@ -1,0 +1,396 @@
+	.file	"alarmCLock_server.i.c"
+	.comm	time_,8,8
+	.text
+	.globl	on_setAlarmStatus
+	.type	on_setAlarmStatus, @function
+on_setAlarmStatus:
+.LFB211:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	time_(%rip), %rax
+	movq	-24(%rbp), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	strcpy
+	movq	-16(%rbp), %rdx
+	movq	-8(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	alarm_clock_service_com_example_alarm_service_alarm_interface_complete_set_alarm_status
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	alarm_clock_service_com_example_alarm_service_alarm_interface_emit_ring_alarm
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE211:
+	.size	on_setAlarmStatus, .-on_setAlarmStatus
+	.globl	on_getAlarmStatus
+	.type	on_getAlarmStatus, @function
+on_getAlarmStatus:
+.LFB212:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	%rcx, -32(%rbp)
+	movq	time_(%rip), %rdx
+	movq	-16(%rbp), %rcx
+	movq	-8(%rbp), %rax
+	movq	%rcx, %rsi
+	movq	%rax, %rdi
+	call	alarm_clock_service_com_example_alarm_service_alarm_interface_complete_get_alarm_status
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE212:
+	.size	on_getAlarmStatus, .-on_getAlarmStatus
+	.section	.rodata
+	.align 8
+.LC0:
+	.string	"Acquired the name %s on the system bus\n"
+	.text
+	.type	on_name_acquired, @function
+on_name_acquired:
+.LFB213:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	g_print
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE213:
+	.size	on_name_acquired, .-on_name_acquired
+	.section	.rodata
+	.align 8
+.LC1:
+	.string	"Lost the name %s on the session bus\n"
+	.text
+	.type	on_name_lost, @function
+on_name_lost:
+.LFB214:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	%rdx, -24(%rbp)
+	movq	-16(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$.LC1, %edi
+	movl	$0, %eax
+	call	g_print
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE214:
+	.size	on_name_lost, .-on_name_lost
+	.section	.rodata
+.LC2:
+	.string	"calin"
+.LC3:
+	.string	"handle_set_alarm_status"
+	.text
+	.globl	LinkMethodsToLocal
+	.type	LinkMethodsToLocal, @function
+LinkMethodsToLocal:
+.LFB215:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movl	$0, %r9d
+	movl	$0, %r8d
+	movl	$.LC2, %ecx
+	movl	$on_setAlarmStatus, %edx
+	movl	$.LC3, %esi
+	movq	%rax, %rdi
+	call	g_signal_connect_data
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE215:
+	.size	LinkMethodsToLocal, .-LinkMethodsToLocal
+	.section	.rodata
+	.align 8
+.LC4:
+	.string	"/com/example/AlarmService/manager"
+	.align 8
+.LC5:
+	.string	"/com/example/AlarmService/manager/Object"
+.LC6:
+	.string	"handle_get_alarm_status"
+.LC7:
+	.string	"succesfully aquired name:%s\n"
+	.text
+	.type	on_bus_acquired, @function
+on_bus_acquired:
+.LFB216:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$64, %rsp
+	movq	%rdi, -40(%rbp)
+	movq	%rsi, -48(%rbp)
+	movq	%rdx, -56(%rbp)
+	movq	$0, -24(%rbp)
+	movl	$.LC4, %edi
+	call	g_dbus_object_manager_server_new
+	movq	%rax, -24(%rbp)
+	movl	$.LC5, %edi
+	call	alarm_clock_service_object_skeleton_new
+	movq	%rax, -16(%rbp)
+	call	alarm_clock_service_com_example_alarm_service_alarm_interface_skeleton_new
+	movq	%rax, -8(%rbp)
+	movq	-8(%rbp), %rdx
+	movq	-16(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	alarm_clock_service_object_skeleton_set_com_example_alarm_service_alarm_interface
+	movq	-8(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_object_unref
+	movq	-8(%rbp), %rax
+	movl	$0, %r9d
+	movl	$0, %r8d
+	movl	$.LC2, %ecx
+	movl	$on_setAlarmStatus, %edx
+	movl	$.LC3, %esi
+	movq	%rax, %rdi
+	call	g_signal_connect_data
+	movq	-8(%rbp), %rax
+	movl	$0, %r9d
+	movl	$0, %r8d
+	movl	$.LC2, %ecx
+	movl	$on_getAlarmStatus, %edx
+	movl	$.LC6, %esi
+	movq	%rax, %rdi
+	call	g_signal_connect_data
+	call	g_dbus_object_skeleton_get_type
+	movq	%rax, %rdx
+	movq	-16(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	g_type_check_instance_cast
+	movq	%rax, %rdx
+	movq	-24(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	g_dbus_object_manager_server_export
+	movq	-16(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_object_unref
+	movq	-40(%rbp), %rdx
+	movq	-24(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	g_dbus_object_manager_server_set_connection
+	movq	-48(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$.LC7, %edi
+	movl	$0, %eax
+	call	printf
+	nop
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE216:
+	.size	on_bus_acquired, .-on_bus_acquired
+	.section	.rodata
+.LC8:
+	.string	"replace"
+	.align 8
+.LC9:
+	.string	"Replace existing name if possible"
+.LC10:
+	.string	"allow-replacement"
+.LC11:
+	.string	"Allow replacement"
+.LC12:
+	.string	"name"
+.LC13:
+	.string	"Name to acquire"
+.LC14:
+	.string	"g_bus_own_name() example"
+.LC15:
+	.string	"Error parsing options: %s"
+.LC16:
+	.string	"Incorrect usage, try --help.\n"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB217:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$272, %rsp
+	movl	%edi, -260(%rbp)
+	movq	%rsi, -272(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movl	$5, %edi
+	call	malloc
+	movq	%rax, time_(%rip)
+	leaq	-208(%rbp), %rdx
+	movl	$0, %eax
+	movl	$24, %ecx
+	movq	%rdx, %rdi
+	rep stosq
+	movq	$.LC8, -208(%rbp)
+	movb	$114, -200(%rbp)
+	leaq	-256(%rbp), %rax
+	movq	%rax, -184(%rbp)
+	movq	$.LC9, -176(%rbp)
+	movq	$.LC10, -160(%rbp)
+	movb	$97, -152(%rbp)
+	leaq	-252(%rbp), %rax
+	movq	%rax, -136(%rbp)
+	movq	$.LC11, -128(%rbp)
+	movq	$.LC12, -112(%rbp)
+	movb	$110, -104(%rbp)
+	movl	$1, -96(%rbp)
+	leaq	-240(%rbp), %rax
+	movq	%rax, -88(%rbp)
+	movq	$.LC13, -80(%rbp)
+	movq	$0, -232(%rbp)
+	movq	$0, -240(%rbp)
+	movl	$0, -256(%rbp)
+	movl	$0, -252(%rbp)
+	movl	$.LC14, %edi
+	call	g_option_context_new
+	movq	%rax, -224(%rbp)
+	leaq	-208(%rbp), %rcx
+	movq	-224(%rbp), %rax
+	movl	$0, %edx
+	movq	%rcx, %rsi
+	movq	%rax, %rdi
+	call	g_option_context_add_main_entries
+	leaq	-232(%rbp), %rcx
+	leaq	-272(%rbp), %rdx
+	leaq	-260(%rbp), %rsi
+	movq	-224(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_option_context_parse
+	testl	%eax, %eax
+	jne	.L8
+	movq	-232(%rbp), %rax
+	movq	8(%rax), %rax
+	movq	%rax, %rsi
+	movl	$.LC15, %edi
+	movl	$0, %eax
+	call	g_printerr
+	movl	$1, %eax
+	jmp	.L13
+.L8:
+	movq	-240(%rbp), %rax
+	testq	%rax, %rax
+	jne	.L10
+	movl	$.LC16, %edi
+	movl	$0, %eax
+	call	g_printerr
+	movl	$1, %eax
+	jmp	.L13
+.L10:
+	movl	$0, -248(%rbp)
+	movl	-256(%rbp), %eax
+	testl	%eax, %eax
+	je	.L11
+	orl	$2, -248(%rbp)
+.L11:
+	movl	-252(%rbp), %eax
+	testl	%eax, %eax
+	je	.L12
+	orl	$1, -248(%rbp)
+.L12:
+	movq	-240(%rbp), %rax
+	movl	-248(%rbp), %edx
+	pushq	$0
+	pushq	$0
+	movl	$on_name_lost, %r9d
+	movl	$on_name_acquired, %r8d
+	movl	$on_bus_acquired, %ecx
+	movq	%rax, %rsi
+	movl	$1, %edi
+	call	g_bus_own_name
+	addq	$16, %rsp
+	movl	%eax, -244(%rbp)
+	movl	$0, %esi
+	movl	$0, %edi
+	call	g_main_loop_new
+	movq	%rax, -216(%rbp)
+	movq	-216(%rbp), %rax
+	movq	%rax, %rdi
+	call	g_main_loop_run
+	movl	-244(%rbp), %eax
+	movl	%eax, %edi
+	call	g_bus_unown_name
+	movl	$0, %eax
+.L13:
+	movq	-8(%rbp), %rcx
+	xorq	%fs:40, %rcx
+	je	.L14
+	call	__stack_chk_fail
+.L14:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE217:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
+	.section	.note.GNU-stack,"",@progbits

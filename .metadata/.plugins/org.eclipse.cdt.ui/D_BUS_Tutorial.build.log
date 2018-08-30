@@ -1,0 +1,9 @@
+09:40:39 **** Incremental Build of configuration Default for project D_BUS_Tutorial ****
+make all 
+gcc -E -P -v -dD src/spec > include/builtin.h
+/bin/sh: 1: cannot create include/builtin.h: Directory nonexistent
+Makefile:15: recipe for target 'spec' failed
+make: *** [spec] Error 2
+
+09:40:39 Build Failed. 2 errors, 0 warnings. (took 502ms)
+

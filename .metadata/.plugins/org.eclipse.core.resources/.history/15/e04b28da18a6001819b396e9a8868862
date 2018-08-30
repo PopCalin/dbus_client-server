@@ -1,0 +1,54 @@
+/*
+ * alarmClock_client.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+const char *server_introspection_xml =
+	DBUS_INTROSPECT_1_0_XML_DOCTYPE_DECL_NODE
+	"<node>\n"
+
+	"  <interface name='org.freedesktop.DBus.Introspectable'>\n"
+	"    <method name='Introspect'>\n"
+	"      <arg name='data' type='s' direction='out' />\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+	"  <interface name='org.freedesktop.DBus.Properties'>\n"
+	"    <method name='Get'>\n"
+	"      <arg name='interface' type='s' direction='in' />\n"
+	"      <arg name='property'  type='s' direction='in' />\n"
+	"      <arg name='value'     type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='GetAll'>\n"
+	"      <arg name='interface'  type='s'     direction='in'/>\n"
+	"      <arg name='properties' type='a{sv}' direction='out'/>\n"
+	"    </method>\n"
+	"  </interface>\n"
+
+	"  <interface name='org.example.TestInterface'>\n"
+	"    <property name='Version' type='s' access='read' />\n"
+	"    <method name='Ping' >\n"
+	"      <arg type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='Echo'>\n"
+	"      <arg name='string' direction='in' type='s'/>\n"
+	"      <arg type='s' direction='out' />\n"
+	"    </method>\n"
+	"    <method name='EmitSignal'>\n"
+	"    </method>\n"
+	"    <method name='Quit'>\n"
+	"    </method>\n"
+	"    <signal name='OnEmitSignal'>\n"
+	"    </signal>"
+	"  </interface>\n"
+
+	"</node>\n";
+
+#include <stdio.h>
+
+int main()
+{
+	return 1;
+}

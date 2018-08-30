@@ -1,0 +1,25 @@
+/*
+ * alarmClock_server.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+
+
+#include <gio/gio.h>
+
+int main (int argc, char *argv[])
+{
+	guint owner_id;
+	  GMainLoop *loop;
+	  GBusNameOwnerFlags flags;
+	  gboolean opt_replace;
+	  gboolean opt_allow_replacement;
+	  gchar *opt_name;
+	  GOptionContext *opt_context;
+	  GError *error;
+
+
+	return 1;
+}

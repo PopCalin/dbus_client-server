@@ -1,0 +1,9 @@
+#include <stdio.h>
+#include <dbus/dbus-glib-lowlevel.h> /* for glib main loop */
+#include <dbus/dbus.h>
+
+
+int main(void)
+{
+	return 1;
+}

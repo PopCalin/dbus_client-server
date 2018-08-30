@@ -1,0 +1,14 @@
+/*
+ * alarmClock_client.c
+ *
+ *  Created on: Aug 22, 2018
+ *      Author: popcalin
+ */
+
+
+#include <stdio.h>
+
+int main()
+{
+	return 1;
+}
