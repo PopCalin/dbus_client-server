@@ -1,11 +1,6 @@
 CFLAGS_DBUS_GLIB = $(shell pkg-config --cflags --libs dbus-1 dbus-glib-1 gio-2.0 gio-unix-2.0)
 CFLAGS = -g -Wall -Werror
 
-SRC_DIR			:= src
-INCLUDE_DIR		:= include
-BUILD_DIR		:= build
-MISC_DIR		:= misc
-
 all: spec alarmClockServiceStubs alarmCLock_server alarmCLock_client alarmClock
 	
 alarmClockServiceStubs: src/alarmClockServiceStubs.c
